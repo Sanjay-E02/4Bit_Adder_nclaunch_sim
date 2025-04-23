@@ -57,9 +57,39 @@ Note : File name should be with HDL Extension
 
 •	fa_4bit_test.v → Test bench 
 
-*/Program to design 4 bit adder by instantiating 1 bit Full adder.also add test bench program */
-Developed by: Register Number*/
+##Verilog Code:
+```
+module full_adder(A,B,CIN,S,COUT);
+input A,B,CIN;
+output S,COUT;
+assign S=A^B^CIN;
+assign COUT=(A&B) | (CIN&(A^B));
+ endmodule
 
+module fulladd_4bit(A,B,C0,S,C4); input [3:0] A,B;
+input C0; output [3:0] S; output C4;
+wire C1,C2,C3;
+full_adder fa0 (A[0],B[0],C0,S[0],C1);
+full_adder fa1 (A[1],B[1],C1,S[1],C2);
+full_adder fa2 (A[2],B[2],C2,S[2],C3);
+full_adder fa3 (A[3],B[3],C3,S[3],C4);
+endmodule
+```
+
+##TestBench Code:
+~~~
+module test_4bit;
+reg [3:0] A;
+reg [3:0] B; reg C0; wire [3:0] S; wire C4;
+fulladd_4bit dut (A,B,C0,S,C4);
+initial
+begin A=4'b0011;B=4'b0011;C0=1'b0;
+#10; A=4'b1011;B=4'b0111;C0=1'b1;
+#10; A=4'b1111;B=4'b1111;C0=1'b1;
+#10;
+end initial #50 $finish;
+endmodule
+~~~
 ## Functional Simulation: 
 
 	Invoke the cadence environment by type the below commands 
@@ -71,6 +101,10 @@ Developed by: Register Number*/
       (The path of cshrc could vary depending on the installation destination)
       
 	After this you can see the window like below 
+
+![Screenshot 2025-04-23 111914](https://github.com/user-attachments/assets/743d545f-991d-4e92-a991-90828ebe6dcb)
+
+
 
 ### Fig 3:Invoke the Cadence Environment
 
@@ -84,11 +118,16 @@ or
 
 	It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
 
+![Screenshot 2025-04-23 111333](https://github.com/user-attachments/assets/c665d798-5e8d-4265-9ed9-1870029d7d3d)
+
+
 ### Fig 4:Setting Multi-step simulation
 
 	Select Multiple Step and then select “Create cds.lib File” .
 
 	Click the cds.lib file and save the file by clicking on Save option 
+![Screenshot 2025-04-23 111402](https://github.com/user-attachments/assets/72c160f6-93db-4329-a434-db421f922332)
+
 
 ### Fig 5:cds.lib file Creation
 
@@ -112,6 +151,9 @@ or
 
 	To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
 
+![Screenshot 2025-04-23 111602](https://github.com/user-attachments/assets/d6dd5fb7-1227-4bf0-a321-b668a10f097a)
+
+
 ### Fig 7: Nclaunch Window
 
 ## Step 1: Compilation:– Process to check the correct Verilog language syntax and usage 
@@ -130,6 +172,9 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
+
+![Screenshot 2025-04-23 111624](https://github.com/user-attachments/assets/eaf3bb71-dc66-4e56-aa19-6727f43fb831)
+
 
 ### Fig 8: Compiled database in worklib
 
@@ -154,6 +199,9 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
    
 	After elaboration the file will come under snapshot. Select the test bench and elaborate it.
 
+![Screenshot 2025-04-23 111652](https://github.com/user-attachments/assets/2c24f570-241d-46fc-862b-e31028aa1a49)
+
+
 ### Fig 9: Elaboration Launch Option
 
 ## Step 3: Simulation: – Simulate with the given test vectors over a period of time to observe the output behaviour. 
@@ -166,11 +214,21 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 
 	Steps for simulation – Run the simulation command with simulator options
 
+![Screenshot 2025-04-23 111816](https://github.com/user-attachments/assets/69d88de0-fa36-4915-a5af-0a862d35c7eb)
+
+
+
 ### Fig 10: Design Browser window for simulation
 
+![Screenshot 2025-04-23 111847](https://github.com/user-attachments/assets/05b1ca1b-b994-4a6b-93a2-793de07cc24a)
+
+
+
 ### Fig 11: Launching Simulation Waveform WindowSimulation Waveform Window
+![Uploading Screenshot 2025-04-23 111859.png…]()
 
 ### Fig 12: Simulation Waveform Window
+![Uploading Screenshot 2025-04-23 111859.png…]()
 
 ### Result:
 
